@@ -117,6 +117,7 @@ $router->get('/admin/users/{id:\d+}', [ManageUserController::class, 'show'], ['s
 $router->post('/admin/users/{id:\d+}/activate', [ManageUserController::class, 'activate'], ['super']);
 $router->post('/admin/users/{id:\d+}/deactivate', [ManageUserController::class, 'deactivate'], ['super']);
 $router->post('/admin/users/{id:\d+}/ban', [ManageUserController::class, 'ban'], ['super']);
+$router->post('/admin/users/{id:\d+}/unban', [ManageUserController::class, 'unban'], ['super']);
 $router->post('/admin/users/{id:\d+}/remove', [ManageUserController::class, 'remove'], ['super']);
 
 $router->get('/admin/admins', [ManageAdminController::class, 'index'], ['super']);

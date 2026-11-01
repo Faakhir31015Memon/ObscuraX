@@ -46,7 +46,7 @@ final class AdminNewsletterController extends Controller
         header('Expires: 0');
 
         $out = fopen('php://output', 'w');
-        fputcsv($out, ['Email', 'Status', 'IP address', 'Subscribed at', 'Unsubscribed at']);
+        fputcsv($out, ['Email', 'Status', 'IP address', 'Subscribed at', 'Unsubscribed at'], ',', '"', '');
 
         foreach (Database::fetchAll('SELECT * FROM newsletter_subscribers ORDER BY created_at DESC') as $row) {
             fputcsv($out, [
@@ -55,7 +55,7 @@ final class AdminNewsletterController extends Controller
                 $row['ip_address'],
                 $row['confirmed_at'],
                 $row['unsubscribed_at'],
-            ]);
+            ], ',', '"', '');
         }
 
         fclose($out);

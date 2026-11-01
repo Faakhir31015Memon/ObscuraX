@@ -13,6 +13,7 @@ use App\Core\Session;
 use App\Core\Validator;
 use App\Models\Newsletter;
 use App\Models\User;
+use App\Models\Verification;
 
 final class AuthController extends Controller
 {

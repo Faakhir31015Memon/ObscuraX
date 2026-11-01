@@ -116,6 +116,22 @@ final class ManageUserController extends Controller
         back('/admin/users/' . $user['id']);
     }
 
+    public function unban(string $id): void
+    {
+        $user = $this->guardTarget($id);
+        if ($user['status'] !== 'banned') {
+            flash('info', 'That account is not currently banned.');
+            back('/admin/users/' . $user['id']);
+        }
+
+        User::setStatus((int) $user['id'], 'active');
+        Activity::admin((int) Auth::id(), 'user.unban', 'Unbanned @' . $user['username'], 'user', (int) $user['id']);
+        Activity::user((int) $user['id'], 'account_unbanned', 'Account ban lifted by an administrator');
+
+        flash('success', '@' . $user['username'] . ' has been unbanned.');
+        back('/admin/users/' . $user['id']);
+    }
+
     public function remove(string $id): void
     {
         $user = $this->guardTarget($id);

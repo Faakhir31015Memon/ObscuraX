@@ -109,7 +109,7 @@ final class AnalyticsController extends Controller
         header('Expires: 0');
 
         $out = fopen('php://output', 'w');
-        fputcsv($out, ['Month', 'New users', 'Published articles', 'Likes', 'Comments', 'Page views']);
+        fputcsv($out, ['Month', 'New users', 'Published articles', 'Likes', 'Comments', 'Page views'], ',', '"', '');
 
         for ($m = 1; $m <= 12; $m++) {
             $key = sprintf('%04d-%02d', $year, $m);
@@ -120,7 +120,7 @@ final class AnalyticsController extends Controller
                 (int) Database::value("SELECT COUNT(*) FROM likes WHERE DATE_FORMAT(created_at, '%Y-%m') = ?", [$key], 0),
                 (int) Database::value("SELECT COUNT(*) FROM comments WHERE DATE_FORMAT(created_at, '%Y-%m') = ?", [$key], 0),
                 (int) Database::value("SELECT COUNT(*) FROM blog_views WHERE DATE_FORMAT(viewed_at, '%Y-%m') = ?", [$key], 0),
-            ]);
+            ], ',', '"', '');
         }
 
         fclose($out);

@@ -33,7 +33,12 @@
         <?php if ($isPrivileged): ?>
             <a class="btn btn-outline-soft btn-sm" href="<?= url('/admin/admins') ?>"><i class="bi bi-person-badge"></i> Manage administrator</a>
         <?php else: ?>
-            <?php if ($user['status'] !== 'active'): ?>
+            <?php if ($user['status'] === 'banned'): ?>
+                <form method="post" action="<?= url('/admin/users/' . $user['id'] . '/unban') ?>">
+                    <?= csrf_field() ?>
+                    <button class="btn btn-brand btn-sm" type="submit"><i class="bi bi-person-check"></i> Unban account</button>
+                </form>
+            <?php elseif ($user['status'] !== 'active'): ?>
                 <form method="post" action="<?= url('/admin/users/' . $user['id'] . '/activate') ?>">
                     <?= csrf_field() ?>
                     <button class="btn btn-brand btn-sm" type="submit"><i class="bi bi-person-check"></i> Activate</button>
@@ -190,7 +195,7 @@
             </div>
         </section>
 
-        <?php if (!$isPrivileged): ?>
+        <?php if (!$isPrivileged && $user['status'] !== 'banned'): ?>
             <section class="admin-card">
                 <div class="admin-card-head">
                     <h2>Ban account</h2>
