@@ -97,7 +97,7 @@ $views = [
             <div class="top">
                 <div>
                     <span class="label">My articles</span>
-                    <p class="value"><?= number_format(count($myBlogs)) ?></p>
+                    <p class="value"><?= number_format((int) ($myBlogsTotal ?? count($myBlogs))) ?></p>
                     <span class="hint"><?= (int) $myPublished ?> published</span>
                 </div>
                 <span class="ico"><i class="bi bi-journal-richtext"></i></span>
@@ -257,7 +257,7 @@ $views = [
                         <h2>Newest readers</h2>
                         <p class="sub">Latest registrations</p>
                     </div>
-                    <a class="small-link" href="<?= url('/admin/users') ?>">All users</a>
+                    <a class="small-link" href="<?= url('/admin/users') ?>">All readers</a>
                 </div>
                 <div class="table-wrap">
                     <table class="admin-table">
