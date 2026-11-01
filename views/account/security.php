@@ -1,22 +1,11 @@
 <?php
 /** @var array $user */
-/** @var bool $mustChange */
 ?>
 <div class="container">
     <div class="account-layout">
         <?php require ROOT_PATH . '/views/account/_sidebar.php'; ?>
 
         <div class="account-main">
-            <?php if ($mustChange): ?>
-                <div class="alert-brand mb-4">
-                    <i class="bi bi-shield-exclamation"></i>
-                    <div>
-                        <strong>A new password is required.</strong>
-                        <p class="mb-0">Your account was created with a temporary password. Choose a personal password to unlock the rest of the site.</p>
-                    </div>
-                </div>
-            <?php endif; ?>
-
             <div class="account-welcome">
                 <div>
                     <span class="eyebrow">Account security</span>
@@ -36,7 +25,7 @@
                             <label class="form-label" for="current_password">Current password <span class="text-muted">*</span></label>
                             <div class="input-icon">
                                 <i class="bi bi-lock"></i>
-                                <input class="form-control" id="current_password" name="current_password" type="password" required autocomplete="current-password" style="padding-right:3rem" <?= $mustChange ? 'autofocus' : '' ?>>
+                                <input class="form-control" id="current_password" name="current_password" type="password" required autocomplete="current-password" style="padding-right:3rem">
                                 <button class="reveal" type="button" data-reveal-target="#current_password" aria-label="Show password"><i class="bi bi-eye"></i></button>
                             </div>
                         </div>

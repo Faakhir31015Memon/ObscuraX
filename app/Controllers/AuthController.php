@@ -59,12 +59,6 @@ final class AuthController extends Controller
         Session::clearOld();
         Session::forget('pending_email');
 
-        $user = Auth::user();
-        if ($user !== null && (int) $user['must_change_password'] === 1) {
-            flash('info', 'Please choose a new password to finish securing your account.');
-            redirect(Auth::isAdmin() ? '/admin/password' : '/account/security');
-        }
-
         flash('success', $result['message']);
 
         $intended = Session::pull('_intended');

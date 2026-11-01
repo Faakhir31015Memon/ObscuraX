@@ -1,6 +1,5 @@
 <?php
 /** @var array $user */
-/** @var bool $mustChange */
 ?>
 <div class="admin-page-head">
     <div>
@@ -9,13 +8,6 @@
         <p>Use a unique password you do not use anywhere else. You will stay signed in on this device.</p>
     </div>
 </div>
-
-<?php if ($mustChange): ?>
-    <div class="pw-change-banner">
-        <i class="bi bi-shield-exclamation"></i>
-        <span>Your account still uses the password issued at setup. Choose a personal password to continue.</span>
-    </div>
-<?php endif; ?>
 
 <div class="admin-grid admin-grid-main">
     <section class="admin-card">
@@ -29,7 +21,7 @@
                     <label class="form-label" for="current_password">Current password</label>
                     <div class="input-icon">
                         <i class="bi bi-lock"></i>
-                        <input class="form-control" id="current_password" name="current_password" type="password" required autocomplete="current-password" style="padding-right:3rem" <?= $mustChange ? 'autofocus' : '' ?>>
+                        <input class="form-control" id="current_password" name="current_password" type="password" required autocomplete="current-password" style="padding-right:3rem">
                         <button class="reveal" type="button" data-reveal-target="#current_password" aria-label="Show password"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>

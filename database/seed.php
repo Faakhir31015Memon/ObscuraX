@@ -116,7 +116,6 @@ foreach ($accounts as $account) {
         'status' => 'active',
         'email_verified_at' => $createdAt,
         'activated_at' => $createdAt,
-        'must_change_password' => 1,
         'last_login_at' => null,
         'last_login_ip' => null,
         'last_activity_at' => null,

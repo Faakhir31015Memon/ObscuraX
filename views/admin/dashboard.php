@@ -43,13 +43,6 @@ $views = [
     </div>
 </div>
 
-<?php if (\App\Core\Auth::mustChangePassword()): ?>
-    <div class="pw-change-banner">
-        <i class="bi bi-shield-exclamation"></i>
-        <span>You are still using the password issued at setup. <a href="<?= url('/admin/password') ?>">Choose a new password</a> before continuing.</span>
-    </div>
-<?php endif; ?>
-
 <div class="admin-grid admin-grid-4">
     <?php if ($isSuper): ?>
         <article class="admin-stat">

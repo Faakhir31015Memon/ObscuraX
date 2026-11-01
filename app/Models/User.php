@@ -178,15 +178,11 @@ final class User
         );
     }
 
-    public static function updatePassword(int $id, string $plainPassword, bool $clearForce = true): void
+    public static function updatePassword(int $id, string $plainPassword): void
     {
-        $data = [
+        self::update($id, [
             'password_hash' => password_hash($plainPassword, PASSWORD_DEFAULT),
             'password_changed_at' => now(),
-        ];
-        if ($clearForce) {
-            $data['must_change_password'] = 0;
-        }
-        self::update($id, $data);
+        ]);
     }
 }

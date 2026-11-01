@@ -186,7 +186,6 @@ final class AccountController extends Controller
             'metaDescription' => 'Manage your ObscuraX password and account security.',
             'bodyClass' => 'page-account',
             'user' => $user,
-            'mustChange' => Auth::mustChangePassword(),
         ]);
     }
 

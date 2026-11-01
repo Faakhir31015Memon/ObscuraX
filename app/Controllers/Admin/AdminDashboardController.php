@@ -58,7 +58,6 @@ final class AdminDashboardController extends Controller
             'pageTitle' => 'Change password — ' . setting('site_name', 'ObscuraX'),
             'metaDescription' => 'Update your administrator password.',
             'bodyClass' => 'page-admin-password',
-            'mustChange' => Auth::mustChangePassword(),
             'user' => Auth::user(),
         ], 'layouts/admin');
     }

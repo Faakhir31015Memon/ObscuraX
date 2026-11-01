@@ -12,7 +12,7 @@ $accent = $blog['accent_color'] ?? '#8b5cf6';
 $minutes = reading_time($blog['content']);
 $shares = share_links($shareUrl, $blog['title']);
 $canComment = (int) $blog['allow_comments'] === 1;
-$canReply = $user !== null && !\App\Core\Auth::mustChangePassword();
+$canReply = $user !== null;
 $commentCount = 0;
 foreach ($comments as $comment) {
     $commentCount += 1 + count($comment['replies'] ?? []);
@@ -170,25 +170,19 @@ foreach ($comments as $comment) {
 
                     <?php if ($canComment): ?>
                         <?php if ($user !== null): ?>
-                            <?php if (\App\Core\Auth::mustChangePassword()): ?>
-                                <div class="comment-closed mb-4">
-                                    You must <a href="<?= url('/account/security') ?>">set a new password</a> before joining discussions.
-                                </div>
-                            <?php else: ?>
-                                <form class="comment-form mb-4" method="post" action="<?= url('/blog/' . $blog['id'] . '/comment') ?>">
-                                    <?= csrf_field() ?>
-                                    <div class="d-flex gap-3">
-                                        <img src="<?= e(\App\Models\User::avatar($user['avatar'] ?? null)) ?>" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0">
-                                        <div class="flex-grow-1">
-                                            <textarea class="form-control" name="content" required minlength="2" maxlength="2000" placeholder="Add to the discussion…" aria-label="Your comment"></textarea>
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                <span class="form-text">Be specific, be kind. Comments are moderated.</span>
-                                                <button class="btn btn-brand btn-sm" type="submit">Post comment</button>
-                                            </div>
+                            <form class="comment-form mb-4" method="post" action="<?= url('/blog/' . $blog['id'] . '/comment') ?>">
+                                <?= csrf_field() ?>
+                                <div class="d-flex gap-3">
+                                    <img src="<?= e(\App\Models\User::avatar($user['avatar'] ?? null)) ?>" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0">
+                                    <div class="flex-grow-1">
+                                        <textarea class="form-control" name="content" required minlength="2" maxlength="2000" placeholder="Add to the discussion…" aria-label="Your comment"></textarea>
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <span class="form-text">Be specific, be kind. Comments are moderated.</span>
+                                            <button class="btn btn-brand btn-sm" type="submit">Post comment</button>
                                         </div>
                                     </div>
-                                </form>
-                            <?php endif; ?>
+                                </div>
+                            </form>
                         <?php else: ?>
                             <div class="comment-closed mb-4 d-flex flex-wrap align-items-center justify-content-between gap-2">
                                 <span>Have something to add? Readers can join the discussion after signing in.</span>

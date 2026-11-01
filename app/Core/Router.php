@@ -116,7 +116,6 @@ final class Router
             'auth' => \App\Middleware\Authenticate::class,
             'admin' => \App\Middleware\RequireAdmin::class,
             'super' => \App\Middleware\RequireSuperAdmin::class,
-            'password' => \App\Middleware\RequirePasswordChanged::class,
         ];
 
         if ($name === 'can' && $parameter !== null) {

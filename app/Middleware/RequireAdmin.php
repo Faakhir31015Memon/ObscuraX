@@ -19,8 +19,5 @@ final class RequireAdmin
         if (!Auth::isAdmin()) {
             abort(403, 'Administrator access is required for this area.');
         }
-        if (Auth::mustChangePassword() && current_path() !== '/admin/password') {
-            redirect('/admin/password');
-        }
     }
 }

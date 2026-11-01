@@ -18,7 +18,7 @@ final class ManageAdminController extends Controller
     {
         $admins = Database::fetchAll(
             "SELECT u.id, u.username, u.email, u.full_name, u.avatar, u.status, u.created_at, u.last_login_at,
-                    u.must_change_password, r.slug AS role_slug, r.name AS role_name,
+                    r.slug AS role_slug, r.name AS role_name,
                     a.title, a.department, a.is_disabled, a.created_at AS admin_since
              FROM users u
              INNER JOIN roles r ON r.id = u.role_id
@@ -63,7 +63,6 @@ final class ManageAdminController extends Controller
                 'status' => 'active',
                 'email_verified_at' => $now,
                 'activated_at' => $now,
-                'must_change_password' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
@@ -82,7 +81,7 @@ final class ManageAdminController extends Controller
         Activity::admin((int) Auth::id(), 'admin.create', 'Created administrator @' . input('username'), 'user', $userId);
         Session::clearOld();
 
-        flash('success', 'Administrator created. They must choose a new password at first sign-in.');
+        flash('success', 'Administrator created. They can change the password anytime from Admin → Change password.');
         redirect('/admin/admins');
     }
 

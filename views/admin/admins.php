@@ -49,9 +49,6 @@
                             <?php else: ?>
                                 <span class="badge-status active">active</span>
                             <?php endif; ?>
-                            <?php if ((int) $admin['must_change_password'] === 1): ?>
-                                <span class="badge-status draft" title="Must choose a password at next sign-in">pending password</span>
-                            <?php endif; ?>
                         </td>
                         <td><span class="cell-sub"><?= e($admin['last_login_at'] ? time_ago($admin['last_login_at']) : 'Never') ?></span></td>
                         <td><span class="cell-sub"><?= e(format_date($admin['admin_since'] ?: $admin['created_at'])) ?></span></td>
@@ -150,7 +147,7 @@
                         <input class="form-control" id="new-admin-password" name="password" type="text" minlength="8" maxlength="72" required autocomplete="new-password">
                         <button class="btn btn-outline-soft" type="button" data-generate-password="#new-admin-password" title="Generate a strong password"><i class="bi bi-shuffle"></i></button>
                     </div>
-                    <p class="form-text">The administrator must choose a new password at first sign-in.</p>
+                    <p class="form-text">Share this password securely. The administrator can change it anytime from Change password.</p>
                 </div>
                 <button class="btn btn-brand w-100" type="submit"><i class="bi bi-person-plus"></i> Create administrator</button>
             </form>

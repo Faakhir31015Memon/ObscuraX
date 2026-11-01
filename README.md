@@ -41,7 +41,7 @@ Built with **Core PHP 8, MySQL/MariaDB, HTML5, CSS3, JavaScript, and Bootstrap 5
    ```bash
    copy .env.example .env
    ```
-   Then set a unique `APP_KEY` (any random 32+ character string) and your database credentials.
+   Then set a unique `APP_KEY` (any random 32+ character string). Database credentials go in `config/db.php` (the XAMPP defaults `127.0.0.1` / `root` / `obscurax` are already filled in).
 
 3. **Create and seed the database** from a terminal:
    ```bash
@@ -64,9 +64,50 @@ C:\xampp\php\php.exe -S 127.0.0.1:8000 router.php
 
 ---
 
+## Deploying to Hostinger
+
+1. **Set the PHP version** — hPanel → Advanced → PHP Configuration → choose **PHP 8.1 or newer** (8.2/8.3 recommended). Enable `pdo_mysql`, `fileinfo`, `mbstring`, `openssl`.
+
+2. **Upload the project** into `public_html` (File Manager → Upload the ZIP, then extract). You can also upload it into a subfolder; the app detects its own base path, so `https://yourdomain.com/ObscuraX/` works too.
+
+3. **Create the database** — hPanel → Databases → MySQL Databases. Create a database and a user, then note the **host**, **database name**, **username** and **password**. Hostinger usually uses `localhost` and prefixes names like `u123456789_obscurax`.
+
+4. **Edit `config/db.php`** and replace the values with the ones from step 3:
+   ```php
+   return [
+       'host' => 'localhost',
+       'port' => '3306',
+       'name' => 'u123456789_obscurax',
+       'user' => 'u123456789_obscurax',
+       'pass' => 'your-database-password',
+       'charset' => 'utf8mb4',
+   ];
+   ```
+   If `config/db.php` is missing (for example when deploying with Git), copy `config/db.example.php` to `config/db.php` first. This file is blocked from web access by `.htaccess`.
+
+5. **Create `.env`** — in File Manager enable *Show hidden files*, copy `.env.example` to `.env`, then set:
+   ```
+   APP_ENV=production
+   APP_DEBUG=false
+   APP_URL=https://yourdomain.com
+   APP_KEY=<a random 32+ character string>
+   ```
+   Add your mail settings if you want password-reset and verification emails delivered to an inbox; with `MAIL_DRIVER=log` they are written to `storage/mail/` instead. `.env` is blocked from web access.
+
+6. **Import the database** — open phpMyAdmin from hPanel, select the database, go to **Import**, and upload **`database/hostinger.sql`**. That one file creates every table and seeds the roles, permissions, three administrator accounts, categories and default settings. The archive starts empty.
+   *With SSH you can instead run `php database/install.php` inside an empty database.*
+
+7. **Make runtime folders writable** — `storage/` and `uploads/` must be writable by PHP (directories `755` or `775`, files `644`).
+
+8. **Open the site** and sign in with the super admin account. Change the password whenever you like from **Admin → Change password**. Remove or keep `database/hostinger.sql` — it is blocked by `.htaccess` and contains no database credentials.
+
+> If you see a database connection error, re-check `config/db.php` — the host on Hostinger is often `localhost`, not `127.0.0.1`, and both the database name and username carry the account prefix.
+
+---
+
 ## Default accounts
 
-All three administrator accounts are flagged **`must_change_password = 1`**. After their first sign-in they are redirected to a mandatory password-change screen before they can open any other admin page.
+Passwords are **not** forced to change at sign-in. Every administrator can change their password whenever they choose from **Admin → Change password**; the change is recorded in the audit log.
 
 | Role | Name | Email | Initial password |
 |------|------|-------|------------------|
@@ -120,9 +161,12 @@ ObscuraX/
 │   ├── Models/               # User, Blog, Comment, Like, Category, Tag, Stat, ...
 │   ├── bootstrap.php         # Autoloader, config, security headers, error handling
 │   └── helpers.php
-├── config/config.php         # Reads .env
+├── config/config.php         # Reads .env and config/db.php
+├── config/db.php             # Database credentials (gitignored)
+├── config/db.example.php     # Template for new deployments
 ├── database/
 │   ├── schema.sql            # Full table structure
+│   ├── hostinger.sql         # One-file import: schema + seed (phpMyAdmin)
 │   ├── seed.php              # Roles, permissions, settings, categories, admins
 │   └── install.php           # CLI installer (--fresh)
 ├── routes/web.php            # All application routes
@@ -169,4 +213,4 @@ To return to a clean installation:
 C:\xampp\php\php.exe database\install.php --fresh
 ```
 
-This drops and recreates the database, restores the three administrator accounts with their initial passwords and forced first-login password change, and reseeds categories and settings. It does **not** restore articles, readers, comments or likes — the archive is intentionally empty from the start.
+This drops and recreates the database, restores the three administrator accounts with their initial passwords, and reseeds categories and settings. It does **not** restore articles, readers, comments or likes — the archive is intentionally empty from the start.

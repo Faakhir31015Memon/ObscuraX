@@ -222,7 +222,6 @@ $pending = $user['status'] === 'inactive' && empty($user['email_verified_at']);
             <div class="admin-card-body">
                 <div class="detail-list">
                     <div class="row-item"><span>Account ID</span><span>#<?= (int) $user['id'] ?></span></div>
-                    <div class="row-item"><span>Force password change</span><span><?= (int) $user['must_change_password'] === 1 ? 'Yes' : 'No' ?></span></div>
                     <div class="row-item"><span>Registered</span><span><?= e(format_date($user['created_at'])) ?></span></div>
                     <div class="row-item"><span>Last active</span><span><?= e(time_ago($user['last_activity_at'])) ?></span></div>
                 </div>

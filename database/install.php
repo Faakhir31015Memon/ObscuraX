@@ -8,7 +8,8 @@ declare(strict_types=1);
  *   php database/install.php            create schema + seed on a fresh database
  *   php database/install.php --fresh    drop and recreate the database first
  *
- * The installer reads credentials from .env. It never writes passwords to disk.
+ * The installer reads database credentials from config/db.php. It never
+ * writes passwords to disk.
  */
 
 if (PHP_SAPI !== 'cli') {
@@ -43,7 +44,7 @@ try {
     );
 } catch (PDOException $e) {
     fwrite(STDERR, "Could not connect to MySQL: " . $e->getMessage() . "\n");
-    fwrite(STDERR, "Check DB_* values in .env and make sure MySQL is running in XAMPP.\n");
+    fwrite(STDERR, "Check the credentials in config/db.php and make sure MySQL is running.\n");
     exit(1);
 }
 
@@ -52,7 +53,17 @@ if ($fresh) {
     $server->exec("DROP DATABASE IF EXISTS `{$dbName}`");
 }
 
-$server->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+try {
+    $server->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+} catch (PDOException $e) {
+    if ($fresh) {
+        fwrite(STDERR, "Could not create the database: " . $e->getMessage() . "\n");
+        exit(1);
+    }
+    // Shared hosts such as Hostinger create the database in the control panel
+    // and the account usually has no CREATE DATABASE privilege.
+    fwrite(STDOUT, "Using the existing database `{$dbName}`.\n");
+}
 fwrite(STDOUT, "Database ready.\n");
 
 $pdo = Database::pdo();
@@ -118,8 +129,8 @@ Administrators
   hamza@admin.com        / H@mza@123.com
   umarbajwa@admin.com    / Um@r@admin123.com
 
-All three administrator accounts are flagged to change their password on first
-sign-in. The archive starts empty: no demo articles, readers, comments or likes.
+Passwords can be changed at any time from Admin -> Change password.
+The archive starts empty: no demo articles, readers, comments or likes.
 Sign in and publish the first investigation from the admin panel.
 
 Next: start Apache + MySQL in XAMPP and open the project in your browser.

@@ -67,11 +67,6 @@ final class Auth
         return self::role() === 'super_admin';
     }
 
-    public static function mustChangePassword(): bool
-    {
-        return (int) (self::$user['must_change_password'] ?? 0) === 1;
-    }
-
     /**
      * Verifies credentials and returns a result describing what happened.
      *

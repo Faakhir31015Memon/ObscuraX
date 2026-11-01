@@ -19,8 +19,5 @@ final class RequireSuperAdmin
         if (!Auth::isSuperAdmin()) {
             abort(403, 'Super administrator access is required.');
         }
-        if (Auth::mustChangePassword() && current_path() !== '/admin/password') {
-            redirect('/admin/password');
-        }
     }
 }

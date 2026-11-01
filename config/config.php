@@ -34,6 +34,19 @@ $env = static function (string $key, string $default = ''): string {
 
 $debug = filter_var($env('APP_DEBUG', 'false'), FILTER_VALIDATE_BOOL);
 
+// Database credentials live in config/db.php so shared hosts can edit one file.
+// Values in db.php take precedence; if it is missing, DB_* from .env is used.
+$dbFile = __DIR__ . '/db.php';
+$db = is_file($dbFile) ? require $dbFile : [];
+$db = is_array($db) ? $db : [];
+
+$dbValue = static function (string $key, string $envKey, string $default) use ($db, $env): string {
+    if (array_key_exists($key, $db) && (string) $db[$key] !== '') {
+        return (string) $db[$key];
+    }
+    return $env($envKey, $default);
+};
+
 return [
     'app' => [
         'name' => $env('APP_NAME', 'ObscuraX'),
@@ -44,12 +57,12 @@ return [
         'key' => $env('APP_KEY', ''),
     ],
     'db' => [
-        'host' => $env('DB_HOST', '127.0.0.1'),
-        'port' => $env('DB_PORT', '3306'),
-        'name' => $env('DB_NAME', 'obscurax'),
-        'user' => $env('DB_USER', 'root'),
-        'pass' => $env('DB_PASS', ''),
-        'charset' => 'utf8mb4',
+        'host' => $dbValue('host', 'DB_HOST', '127.0.0.1'),
+        'port' => $dbValue('port', 'DB_PORT', '3306'),
+        'name' => $dbValue('name', 'DB_NAME', 'obscurax'),
+        'user' => $dbValue('user', 'DB_USER', 'root'),
+        'pass' => (string) ($db['pass'] ?? $env('DB_PASS', '')),
+        'charset' => (string) ($db['charset'] ?? 'utf8mb4'),
     ],
     'mail' => [
         'driver' => $env('MAIL_DRIVER', 'log'),
