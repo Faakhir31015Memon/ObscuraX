@@ -5,6 +5,7 @@
 /** @var list<array> $blogs */
 /** @var array $counts */
 /** @var bool $isPrivileged */
+$pending = $user['status'] === 'inactive' && empty($user['email_verified_at']);
 ?>
 <div class="admin-page-head">
     <div>
@@ -26,7 +27,7 @@
             <span>@<?= e($user['username']) ?></span>
             <span><?= e($user['email']) ?></span>
             <span class="role-pill <?= e($user['role_slug']) ?>"><?= e($user['role_name']) ?></span>
-            <span class="badge-status <?= e($user['status']) ?>"><?= e(\App\Models\User::statusLabel($user['status'])) ?></span>
+            <span class="badge-status <?= e($pending ? 'pending' : $user['status']) ?>"><?= e($pending ? 'Awaiting verification' : \App\Models\User::statusLabel($user['status'])) ?></span>
         </div>
     </div>
     <div class="actions">
@@ -76,7 +77,7 @@
                     <div class="detail-list">
                         <div class="row-item"><span>Last sign-in</span><span><?= e(format_datetime($user['last_login_at'])) ?></span></div>
                         <div class="row-item"><span>Last IP</span><span><?= e($user['last_login_ip'] ?: 'Unknown') ?></span></div>
-                        <div class="row-item"><span>Status</span><span><?= e(\App\Models\User::statusLabel($user['status'])) ?></span></div>
+                        <div class="row-item"><span>Status</span><span><?= e($pending ? 'Awaiting verification' : \App\Models\User::statusLabel($user['status'])) ?></span></div>
                         <div class="row-item"><span>Password changed</span><span><?= e(format_datetime($user['password_changed_at'])) ?></span></div>
                         <div class="row-item"><span>Website</span><span><?= $user['website'] ? '<a href="' . e($user['website']) . '" target="_blank" rel="noopener">' . e($user['website']) . '</a>' : '—' ?></span></div>
                     </div>

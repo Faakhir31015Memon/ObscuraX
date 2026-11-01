@@ -17,19 +17,18 @@ final class ManageUserController extends Controller
     {
         $filters = [
             'q' => trim((string) ($_GET['q'] ?? '')),
-            'role' => (string) ($_GET['role'] ?? ''),
+            'role' => 'user',
             'status' => (string) ($_GET['status'] ?? ''),
             'verified' => (string) ($_GET['verified'] ?? ''),
         ];
         $page = max(1, (int) ($_GET['page'] ?? 1));
 
         $this->view('admin/users/index', [
-            'pageTitle' => 'Users — ' . setting('site_name', 'ObscuraX'),
+            'pageTitle' => 'Readers — ' . setting('site_name', 'ObscuraX'),
             'metaDescription' => 'Manage reader accounts.',
             'bodyClass' => 'page-admin-users',
             'users' => User::paginate($filters, $page, 15),
             'filters' => $filters,
-            'roles' => Database::fetchAll('SELECT slug, name FROM roles ORDER BY level ASC'),
             'stats' => Stat::overview(),
         ], 'layouts/admin');
     }
@@ -37,8 +36,8 @@ final class ManageUserController extends Controller
     public function show(string $id): void
     {
         $user = User::find((int) $id);
-        if ($user === null) {
-            abort(404, 'That user could not be found.');
+        if ($user === null || ($user['role_slug'] ?? '') !== 'user') {
+            abort(404, 'That reader could not be found.');
         }
 
         $activity = Database::fetchAll(

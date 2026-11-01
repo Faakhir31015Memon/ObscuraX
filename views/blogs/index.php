@@ -93,6 +93,7 @@ $sorts = ['latest' => 'Newest first', 'popular' => 'Most read', 'liked' => 'Most
     </div>
 </section>
 
+<?php if ($tags !== []): ?>
 <section class="section-tight section-line">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -108,3 +109,4 @@ $sorts = ['latest' => 'Newest first', 'popular' => 'Most read', 'liked' => 'Most
         </div>
     </div>
 </section>
+<?php endif; ?>

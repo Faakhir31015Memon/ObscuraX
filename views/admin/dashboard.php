@@ -269,7 +269,7 @@ $views = [
                                         <img src="<?= e(\App\Models\User::avatar($reader['avatar'])) ?>" alt="">
                                         <div>
                                             <div class="name"><?= e($reader['username']) ?></div>
-                                            <span class="sub"><?= e($reader['role_slug']) ?> · <?= e(time_ago($reader['created_at'])) ?></span>
+                                            <span class="sub">Reader · <?= e(time_ago($reader['created_at'])) ?></span>
                                         </div>
                                     </div>
                                 </td>

@@ -412,7 +412,7 @@ html[data-theme="light"] .theme-icon-moon { display: inline-flex; }
     align-items: center;
     overflow: hidden;
     border-bottom: 1px solid var(--line);
-    background-image: linear-gradient(90deg, rgba(6, 5, 10, 0.96) 8%, rgba(6, 5, 10, 0.72) 46%, rgba(6, 5, 10, 0.5) 72%, rgba(6, 5, 10, 0.92) 100%), var(--hero-image, url('../assets/img/hero-default.jpg'));
+    background-image: linear-gradient(90deg, rgba(6, 5, 10, 0.96) 8%, rgba(6, 5, 10, 0.72) 46%, rgba(6, 5, 10, 0.5) 72%, rgba(6, 5, 10, 0.92) 100%), var(--hero-image, url('../img/hero-default.jpg'));
     background-size: cover;
     background-position: center;
 }
@@ -1176,10 +1176,10 @@ textarea.form-control { min-height: 120px; }
 .filter-bar .form-control, .filter-bar .form-select {
     min-height: 40px;
     border: 0;
-    background: transparent;
+    background-color: transparent;
     font-size: 0.84rem;
 }
-.filter-bar .form-control:focus, .filter-bar .form-select:focus { box-shadow: none; background: rgba(255, 255, 255, 0.03); }
+.filter-bar .form-control:focus, .filter-bar .form-select:focus { box-shadow: none; background-color: rgba(255, 255, 255, 0.03); }
 .filter-bar .divider { width: 1px; height: 22px; background: var(--line-2); }
 
 .filter-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -1238,7 +1238,7 @@ textarea.form-control { min-height: 120px; }
     justify-content: space-between;
     padding: clamp(2rem, 4vw, 3.4rem);
     overflow: hidden;
-    background-image: linear-gradient(180deg, rgba(6, 5, 10, 0.55), rgba(6, 5, 10, 0.92)), url('../assets/img/auth-art.jpg');
+    background-image: linear-gradient(180deg, rgba(6, 5, 10, 0.55), rgba(6, 5, 10, 0.92)), url('../img/auth-art.jpg');
     background-size: cover;
     background-position: center;
     border-right: 1px solid var(--line);
@@ -2160,7 +2160,7 @@ html[data-theme="light"] .user-chip:hover { color: var(--heading); }
 html[data-theme="light"] .hero {
     background-image:
         linear-gradient(90deg, rgba(248, 245, 253, 0.97) 8%, rgba(248, 245, 253, 0.86) 46%, rgba(248, 245, 253, 0.6) 72%, rgba(248, 245, 253, 0.95) 100%),
-        var(--hero-image, url('../assets/img/hero-default.jpg'));
+        var(--hero-image, url('../img/hero-default.jpg'));
 }
 html[data-theme="light"] .hero::after {
     background: linear-gradient(180deg, rgba(248, 245, 253, 0.35), transparent 30%, transparent 68%, rgba(248, 245, 253, 0.98));
@@ -2280,9 +2280,15 @@ html[data-theme="light"] .page-head::before {
 html[data-theme="light"] .breadcrumb { --bs-breadcrumb-divider-color: #948ca4; --bs-breadcrumb-item-active-color: #4b405e; }
 html[data-theme="light"] .filter-bar { background: rgba(255, 255, 255, 0.8); }
 html[data-theme="light"] .filter-bar .form-control:focus,
-html[data-theme="light"] .filter-bar .form-select:focus { background: rgba(255, 255, 255, 0.9); }
-html[data-theme="light"] .filter-pill { background: #ffffff; }
+html[data-theme="light"] .filter-bar .form-select:focus { background-color: rgba(255, 255, 255, 0.9); }
+html[data-theme="light"] .filter-pill:not(.active) { background: #ffffff; }
 html[data-theme="light"] .filter-pill:hover { color: #4c1d95; }
+html[data-theme="light"] .filter-pill.active {
+    color: #ffffff;
+    border-color: transparent;
+    background: linear-gradient(110deg, rgba(109, 40, 217, 0.95), rgba(219, 39, 119, 0.85));
+}
+html[data-theme="light"] .filter-pill.active:hover { color: #ffffff; }
 html[data-theme="light"] .page-link,
 html[data-theme="light"] .pagination .page-item > span { background: #ffffff; }
 html[data-theme="light"] .page-link:hover { color: #4c1d95; }

@@ -7,7 +7,6 @@
 /** @var list<array> $topLiked */
 /** @var list<array> $topCommented */
 /** @var list<array> $topUsers */
-/** @var list<array> $recentRegistrations */
 /** @var list<array> $usersByStatus */
 /** @var list<array> $categories */
 /** @var list<array> $roles */
@@ -98,8 +97,8 @@ $yearlyChart = [
         <div class="top">
             <div>
                 <span class="label">Readers</span>
-                <p class="value"><?= number_format((int) $overview['users_total']) ?></p>
-                <span class="hint"><?= number_format((int) $overview['users_active']) ?> active · <?= (int) $overview['users_online'] ?> online</span>
+                <p class="value"><?= number_format((int) $overview['readers_total']) ?></p>
+                <span class="hint"><?= number_format((int) $overview['readers_active']) ?> active · <?= (int) $overview['readers_online'] ?> online</span>
             </div>
             <span class="ico"><i class="bi bi-people"></i></span>
         </div>
@@ -152,7 +151,7 @@ $yearlyChart = [
         <div class="admin-card-head">
             <div>
                 <h2>Account states</h2>
-                <p class="sub">Every registered account</p>
+                <p class="sub">Readers and team accounts</p>
             </div>
         </div>
         <div class="admin-card-body">

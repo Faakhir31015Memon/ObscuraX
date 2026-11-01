@@ -21,6 +21,9 @@ final class Stat
             'readers_online' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'active' AND u.last_activity_at >= (NOW() - INTERVAL 5 MINUTE)"),
             'readers_new_today' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND DATE(u.created_at) = CURDATE()"),
             'readers_new_month' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')"),
+            'readers_banned' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'banned'"),
+            'readers_removed' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'removed'"),
+            'readers_deactivated' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'inactive' AND u.email_verified_at IS NOT NULL"),
             'users_total' => $v('SELECT COUNT(*) FROM users'),
             'users_active' => $v("SELECT COUNT(*) FROM users WHERE status = 'active'"),
             'users_online' => $v("SELECT COUNT(*) FROM users WHERE status = 'active' AND last_activity_at >= (NOW() - INTERVAL 5 MINUTE)"),
@@ -179,7 +182,7 @@ final class Stat
                     ((SELECT COUNT(*) FROM comments c WHERE c.user_id = u.id)
                      + (SELECT COUNT(*) FROM likes l WHERE l.user_id = u.id)) AS engagement
              FROM users u INNER JOIN roles r ON r.id = u.role_id
-             WHERE u.status = 'active'
+             WHERE u.status = 'active' AND r.slug = 'user'
              ORDER BY engagement DESC, u.created_at ASC LIMIT $limit"
         );
     }
@@ -220,6 +223,7 @@ final class Stat
         return Database::fetchAll(
             "SELECT u.id, u.username, u.email, u.avatar, u.status, u.created_at, u.email_verified_at, r.slug AS role_slug
              FROM users u INNER JOIN roles r ON r.id = u.role_id
+             WHERE r.slug = 'user'
              ORDER BY u.created_at DESC LIMIT $limit"
         );
     }

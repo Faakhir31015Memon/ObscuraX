@@ -6,8 +6,9 @@
 /** @var bool $debug */
 $siteName = function_exists('setting') ? setting('site_name', 'ObscuraX') : 'ObscuraX';
 $siteTagline = function_exists('setting') ? setting('site_tagline', 'Explore the Unknown') : 'Explore the Unknown';
-$pageTitle = $code . ' — ' . $title . ' · ' . $siteName;
-$metaDescription = $title;
+$errorTitle = $title;
+$pageTitle = $code . ' — ' . $errorTitle . ' · ' . $siteName;
+$metaDescription = $errorTitle;
 $noIndex = true;
 $logo = asset('assets/img/logo-mark.png');
 ?>
@@ -23,7 +24,7 @@ $logo = asset('assets/img/logo-mark.png');
             <img src="<?= e($logo) ?>" alt="<?= e($siteName) ?>" style="height:64px">
         </a>
         <p class="error-code"><?= e((string) $code) ?></p>
-        <h1><?= e($title) ?></h1>
+        <h1><?= e($errorTitle) ?></h1>
         <p><?= e($message !== '' ? $message : 'The page you were looking for could not be delivered. It may have moved, expired, or never existed at all.') ?></p>
         <div class="d-flex flex-wrap justify-content-center gap-2">
             <a class="btn btn-brand" href="<?= url('/') ?>"><i class="bi bi-house me-1"></i> Return home</a>

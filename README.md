@@ -1,6 +1,6 @@
 # ObscuraX
 
-ObscuraX is a complete blogging and knowledge platform exploring **Black Magic & Occult**, **Sexual Health & Education**, and **Hacking & Cybersecurity**. It ships with a premium dark theme (black / purple / red / silver), a full CMS, reader engagement tools, a three-tier administration system, and interactive analytics.
+ObscuraX is a complete blogging and knowledge platform exploring **Black Magic & Occult**, **Sexual Health & Education**, and **Hacking & Cybersecurity**. It ships with a premium dark theme (black / purple / red / silver) plus a matching light theme, a full CMS, reader engagement tools, a three-tier administration system, and interactive analytics.
 
 Built with **Core PHP 8, MySQL/MariaDB, HTML5, CSS3, JavaScript, and Bootstrap 5** — no framework, no build step.
 
@@ -14,6 +14,8 @@ Built with **Core PHP 8, MySQL/MariaDB, HTML5, CSS3, JavaScript, and Bootstrap 5
 - **Admin panel (2 editors)** — create and manage *their own* articles, reply to and moderate comments, manage categories and tags, customise the homepage hero. They cannot manage users or other administrators.
 - **Super admin panel** — user lifecycle (activate/deactivate/ban/unban/mark removed), administrator management, all articles/likes/comments, categories, tags, newsletter, contact messages, branding (logo & favicon), hero, static pages, social links, full activity logs, analytics and CSV report exports.
 - **Analytics** — users by status, registrations, monthly/yearly series, most viewed/liked/commented articles, category breakdown, most active readers, last logins, interactive Chart.js charts, annual reports and exports.
+- **Live metrics** — the homepage hero (investigations, verified readers, total readers, reads), the admin sidebar reader badge, dashboard, readers directory and analytics all read straight from the database, so the numbers update the moment content or accounts change.
+- **Light & dark themes** — a header toggle switches the whole UI (public site and admin panel) between the default dark palette and a polished light palette, remembers the choice in `localStorage`, and recolours charts instantly.
 - **Security** — PDO prepared statements everywhere, CSRF tokens on every POST, output escaping, bcrypt password hashing, secure single-use reset/verification tokens, login throttling, session fingerprinting and regeneration, RBAC, upload MIME validation, strict CSP with per-request nonces, administrative audit trails.
 
 ---
@@ -45,8 +47,7 @@ Built with **Core PHP 8, MySQL/MariaDB, HTML5, CSS3, JavaScript, and Bootstrap 5
    ```bash
    C:\xampp\php\php.exe database\install.php --fresh
    ```
-   This drops and recreates the `obscurax` database, applies [database/schema.sql](database/schema.sql), and seeds roles, permissions, settings, categories, tags, demo articles, and demo readers.
-   *(The schema file can also be imported directly through phpMyAdmin, but the installer is required to seed the default accounts.)*
+   This drops and recreates the `obscurax` database, applies [database/schema.sql](database/schema.sql), and seeds roles, permissions, settings, categories, and the three administrator accounts. **No demo articles, readers, comments or likes are created** — the archive starts completely empty and the first investigation is published from the admin panel.
 
 4. **Start Apache and MySQL** in the XAMPP control panel, then open:
    ```
@@ -72,9 +73,8 @@ All three administrator accounts are flagged **`must_change_password = 1`**. Aft
 | Super Admin | MyMn SaaB | `MyMnSaaB@superadmin.com` | `MyMnSaaB@accessadmin.com` |
 | Admin | Hamza | `hamza@admin.com` | `H@mza@123.com` |
 | Admin | Umar Bajwa | `umarbajwa@admin.com` | `Um@r@admin123.com` |
-| Reader (demo) | Nina Qureshi | `nina@example.com` | `Reader@123` |
 
-Demo reader accounts: `nina.reader`, `omar.reader`, `sara.reader`, `dan.reader`, `lea.reader`, `taha.reader` (all `Reader@123`). Seeded articles are sample editorial content and can be edited or deleted from the admin panel.
+There are no demo reader accounts. Readers register through the public site; until the first reader signs up, homepage and dashboard metrics legitimately show zero.
 
 ---
 
@@ -123,7 +123,7 @@ ObscuraX/
 ├── config/config.php         # Reads .env
 ├── database/
 │   ├── schema.sql            # Full table structure
-│   ├── seed.php              # Demo data
+│   ├── seed.php              # Roles, permissions, settings, categories, admins
 │   └── install.php           # CLI installer (--fresh)
 ├── routes/web.php            # All application routes
 ├── views/                    # Layouts, public pages, auth, admin, emails
@@ -161,12 +161,12 @@ For production, set `APP_DEBUG=false`, use HTTPS, set a strong `APP_KEY`, create
 
 ---
 
-## Resetting the demo
+## Resetting the database
 
-To return to a clean, fully seeded state:
+To return to a clean installation:
 
 ```bash
 C:\xampp\php\php.exe database\install.php --fresh
 ```
 
-This restores the original accounts and passwords, the forced first-login password change flags, and all sample content.
+This drops and recreates the database, restores the three administrator accounts with their initial passwords and forced first-login password change, and reseeds categories and settings. It does **not** restore articles, readers, comments or likes — the archive is intentionally empty from the start.

@@ -30,7 +30,6 @@ final class AnalyticsController extends Controller
             'topLiked' => Stat::topBlogs('likes', 8),
             'topCommented' => Stat::topBlogs('comments', 8),
             'topUsers' => Stat::topUsers(10),
-            'recentRegistrations' => Stat::recentRegistrations(10),
             'usersByStatus' => Stat::usersByStatus(),
             'categories' => $this->categoryStats(),
             'roles' => Database::fetchAll(
