@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Default profile avatar">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="72%">
+      <stop offset="0%" stop-color="#2a1b3d"/>
+      <stop offset="55%" stop-color="#141021"/>
+      <stop offset="100%" stop-color="#0a0810"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity=".9"/>
+      <stop offset="55%" stop-color="#c4b0ff" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#ff2d4b" stop-opacity=".75"/>
+    </linearGradient>
+    <linearGradient id="silhouette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9e2f6"/>
+      <stop offset="100%" stop-color="#8d84a3"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="320" height="320" fill="url(#bg)"/>
+  <circle cx="160" cy="160" r="122" fill="none" stroke="url(#ring)" stroke-width="2" opacity=".7"/>
+  <circle cx="160" cy="160" r="104" fill="none" stroke="#8b5cf6" stroke-width="1" opacity=".22"/>
+  <g fill="url(#silhouette)" filter="url(#glow)" opacity=".92">
+    <circle cx="160" cy="122" r="42"/>
+    <path d="M160 176c-45 0-78 28-84 66a6 6 0 0 0 6 7h156a6 6 0 0 0 6-7c-6-38-39-66-84-66z"/>
+  </g>
+  <circle cx="160" cy="160" r="122" fill="none" stroke="#ff2d4b" stroke-width="1" opacity=".14"/>
+</svg>
