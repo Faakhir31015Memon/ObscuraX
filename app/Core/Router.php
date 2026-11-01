@@ -46,15 +46,14 @@ final class Router
     {
         $method = strtoupper($method) === 'HEAD' ? 'GET' : strtoupper($method);
         $path = '/' . trim(rawurldecode((string) parse_url($uri, PHP_URL_PATH)), '/');
-        if ($path === '/index.php') {
-            $path = '/';
-        }
 
         $base = defined('BASE_PATH') ? BASE_PATH : '';
-        if ($base !== '' && $path !== $base && str_starts_with($path, $base . '/')) {
+        if ($base !== '' && ($path === $base || str_starts_with($path, $base . '/'))) {
             $path = substr($path, strlen($base));
         }
-        $path = $path === '' ? '/' : $path;
+        if ($path === '/index.php' || $path === '') {
+            $path = '/';
+        }
 
         $allowedMethods = [];
 
