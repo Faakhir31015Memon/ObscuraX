@@ -118,12 +118,9 @@ Administrators
   hamza@admin.com        / H@mza@123.com
   umarbajwa@admin.com    / Um@r@admin123.com
 
-Demo readers (password: Reader@123)
-  nina.reader, omar.reader, sara.reader, dan.reader, lea.reader, taha.reader
-
 All three administrator accounts are flagged to change their password on first
-sign-in, and the seeded articles are sample editorial content you can edit or
-delete from the admin panel.
+sign-in. The archive starts empty: no demo articles, readers, comments or likes.
+Sign in and publish the first investigation from the admin panel.
 
 Next: start Apache + MySQL in XAMPP and open the project in your browser.
 
