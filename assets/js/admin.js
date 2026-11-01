@@ -108,82 +108,96 @@
     /* -------------------------------------------------------------- charts */
     const chartCanvases = document.querySelectorAll('canvas[data-chart]');
     if (chartCanvases.length && window.Chart) {
-        Chart.defaults.color = '#958fa6';
-        Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
-        Chart.defaults.font.family = "'Inter', -apple-system, 'Segoe UI', sans-serif";
-        Chart.defaults.font.size = 11;
+        let chartInstances = [];
 
-        chartCanvases.forEach((canvas) => {
-            const source = document.getElementById(canvas.dataset.chart);
-            if (!source) return;
-            let spec;
-            try {
-                spec = JSON.parse(source.textContent);
-            } catch (error) {
-                return;
-            }
+        const buildCharts = () => {
+            chartInstances.forEach((chart) => chart.destroy());
+            chartInstances = [];
 
-            const radial = ['doughnut', 'pie', 'polarArea'].includes(spec.type);
-            const options = {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: {
-                        display: spec.legend !== false,
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            pointStyle: 'circle',
+            const light = document.documentElement.getAttribute('data-theme') === 'light';
+            const axis = light ? '#5c5368' : '#8b8499';
+            const grid = light ? 'rgba(24, 16, 42, 0.08)' : 'rgba(255, 255, 255, 0.045)';
+
+            Chart.defaults.color = light ? '#5a5168' : '#958fa6';
+            Chart.defaults.borderColor = light ? 'rgba(24, 16, 42, 0.1)' : 'rgba(255, 255, 255, 0.07)';
+            Chart.defaults.font.family = "'Inter', -apple-system, 'Segoe UI', sans-serif";
+            Chart.defaults.font.size = 11;
+
+            chartCanvases.forEach((canvas) => {
+                const source = document.getElementById(canvas.dataset.chart);
+                if (!source) return;
+                let spec;
+                try {
+                    spec = JSON.parse(source.textContent);
+                } catch (error) {
+                    return;
+                }
+
+                const radial = ['doughnut', 'pie', 'polarArea'].includes(spec.type);
+                const options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display: spec.legend !== false,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                boxWidth: 7,
+                                boxHeight: 7,
+                                padding: 16
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: light ? 'rgba(255, 255, 255, 0.98)' : 'rgba(17, 13, 25, 0.97)',
+                            borderColor: light ? 'rgba(124, 58, 237, 0.3)' : 'rgba(167, 139, 250, 0.3)',
+                            borderWidth: 1,
+                            titleColor: light ? '#1c1526' : '#f4effc',
+                            bodyColor: light ? '#4a3f5e' : '#c9c3d7',
+                            padding: 10,
+                            cornerRadius: 10,
+                            displayColors: true,
                             boxWidth: 7,
                             boxHeight: 7,
-                            padding: 16
+                            usePointStyle: true
                         }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(17, 13, 25, 0.97)',
-                        borderColor: 'rgba(167,139,250,0.3)',
-                        borderWidth: 1,
-                        titleColor: '#f4effc',
-                        bodyColor: '#c9c3d7',
-                        padding: 10,
-                        cornerRadius: 10,
-                        displayColors: true,
-                        boxWidth: 7,
-                        boxHeight: 7,
-                        usePointStyle: true
-                    }
-                }
-            };
-
-            if (!radial) {
-                options.scales = {
-                    x: {
-                        grid: { color: 'rgba(255,255,255,0.045)', drawBorder: false },
-                        ticks: { color: '#8b8499', maxRotation: 0, autoSkipPadding: 14 }
-                    },
-                    y: {
-                        beginAtZero: spec.beginAtZero !== false,
-                        grid: { color: 'rgba(255,255,255,0.045)', drawBorder: false },
-                        ticks: { color: '#8b8499', precision: 0 }
                     }
                 };
-                if (spec.horizontal) {
-                    options.indexAxis = 'y';
+
+                if (!radial) {
+                    options.scales = {
+                        x: {
+                            grid: { color: grid, drawBorder: false },
+                            ticks: { color: axis, maxRotation: 0, autoSkipPadding: 14 }
+                        },
+                        y: {
+                            beginAtZero: spec.beginAtZero !== false,
+                            grid: { color: grid, drawBorder: false },
+                            ticks: { color: axis, precision: 0 }
+                        }
+                    };
+                    if (spec.horizontal) {
+                        options.indexAxis = 'y';
+                    }
                 }
-            }
 
-            if (radial) {
-                options.cutout = spec.type === 'doughnut' ? '68%' : undefined;
-                options.plugins.legend.position = 'right';
-            }
+                if (radial) {
+                    options.cutout = spec.type === 'doughnut' ? '68%' : undefined;
+                    options.plugins.legend.position = 'right';
+                }
 
-            new Chart(canvas, {
-                type: spec.type || 'line',
-                data: { labels: spec.labels || [], datasets: spec.datasets || [] },
-                options: options
+                chartInstances.push(new Chart(canvas, {
+                    type: spec.type || 'line',
+                    data: { labels: spec.labels || [], datasets: spec.datasets || [] },
+                    options: options
+                }));
             });
-        });
+        };
+
+        buildCharts();
+        document.addEventListener('themechange', buildCharts);
     }
 
     /* --------------------------------------------------- password generator */

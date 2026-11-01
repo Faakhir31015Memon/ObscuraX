@@ -8,6 +8,35 @@
     const csrf = () => (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
     const base = () => (document.querySelector('meta[name="base-url"]') || {}).content || '';
 
+    /* --------------------------------------------------------------- theme */
+    const THEME_KEY = 'obscurax-theme';
+    const themeRoot = document.documentElement;
+
+    const applyTheme = (theme) => {
+        const next = theme === 'light' ? 'light' : 'dark';
+        themeRoot.setAttribute('data-theme', next);
+        themeRoot.style.colorScheme = next;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', next === 'light' ? '#f6f3fb' : '#06050a');
+        const label = next === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
+        document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+            button.setAttribute('aria-label', label);
+            button.setAttribute('title', label);
+            button.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+        });
+        document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+    };
+
+    applyTheme(themeRoot.getAttribute('data-theme') || 'dark');
+
+    document.addEventListener('click', (event) => {
+        const toggle = event.target.closest('[data-theme-toggle]');
+        if (!toggle) return;
+        const next = themeRoot.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        try { localStorage.setItem(THEME_KEY, next); } catch (error) { /* storage blocked */ }
+        applyTheme(next);
+    });
+
     function flash(message, type) {
         let stack = document.querySelector('.flash-stack');
         if (!stack) {

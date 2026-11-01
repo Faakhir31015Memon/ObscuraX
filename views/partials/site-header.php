@@ -39,6 +39,11 @@ $roleLabel = $user !== null ? ($user['role_slug'] === 'super_admin' ? 'Super Adm
                     <input class="form-control" type="search" name="q" placeholder="Search the archive…" aria-label="Search" value="<?= e($_GET['q'] ?? '') ?>">
                 </form>
 
+                <button class="search-toggle theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode">
+                    <span class="theme-icon theme-icon-sun"><i class="bi bi-sun"></i></span>
+                    <span class="theme-icon theme-icon-moon"><i class="bi bi-moon-stars"></i></span>
+                </button>
+
                 <button class="nav-toggle d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Open menu">
                     <i class="bi bi-list"></i>
                 </button>

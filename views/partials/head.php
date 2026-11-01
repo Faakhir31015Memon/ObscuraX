@@ -11,6 +11,16 @@ $touchIcon = setting('site_favicon') !== '' ? uploaded_url(setting('site_favicon
 <title><?= e($title) ?></title>
 <meta name="description" content="<?= e(str_limit($description, 300)) ?>">
 <meta name="theme-color" content="#06050a">
+<script nonce="<?= e(CSP_NONCE) ?>">
+    (function () {
+        try {
+            var saved = localStorage.getItem('obscurax-theme');
+            document.documentElement.setAttribute('data-theme', saved === 'light' ? 'light' : 'dark');
+        } catch (error) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    })();
+</script>
 <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
 <meta name="base-url" content="<?= e(rtrim(url('/'), '/')) ?>">
 <?php if (!empty($noIndex)): ?>

@@ -3,11 +3,14 @@
 /** @var array $authUser */
 $isSuper = \App\Core\Auth::isSuperAdmin();
 $unread = 0;
+$readerCount = 0;
 if ($isSuper) {
     try {
         $unread = \App\Models\Contact::unreadCount();
+        $readerCount = \App\Models\Stat::readersTotal();
     } catch (\Throwable) {
         $unread = 0;
+        $readerCount = 0;
     }
 }
 $logo = setting('site_logo') !== '' ? uploaded_url(setting('site_logo')) : asset('assets/img/logo.png');
@@ -17,7 +20,7 @@ $sections = [
     'tags' => 'Tags',
     'comments' => 'Comments',
     'hero' => 'Hero section',
-    'users' => 'Users',
+    'users' => 'Readers',
     'admins' => 'Administrators',
     'likes' => 'Likes',
     'analytics' => 'Analytics',
@@ -74,7 +77,7 @@ $adminNav = static function (string $path, string $icon, string $label, bool $ex
 
             <?php if ($isSuper): ?>
                 <span class="admin-nav-label">Community</span>
-                <?= $adminNav('/admin/users', 'bi-people', 'Users') ?>
+                <?= $adminNav('/admin/users', 'bi-people', 'Readers', false, $readerCount) ?>
                 <?= $adminNav('/admin/admins', 'bi-person-badge', 'Administrators') ?>
                 <?= $adminNav('/admin/blogs/all', 'bi-files', 'All articles') ?>
                 <?= $adminNav('/admin/likes', 'bi-heart', 'Likes') ?>
@@ -115,6 +118,10 @@ $adminNav = static function (string $path, string $icon, string $label, bool $ex
             <button class="admin-icon-btn admin-menu-toggle" type="button" data-sidebar-toggle aria-label="Open menu"><i class="bi bi-list"></i></button>
             <p class="crumb"><a href="<?= url('/admin') ?>">Admin</a><span class="sep">/</span><?= e($sectionLabel) ?></p>
             <div class="admin-topbar-actions">
+                <button class="admin-icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode">
+                    <span class="theme-icon theme-icon-sun"><i class="bi bi-sun"></i></span>
+                    <span class="theme-icon theme-icon-moon"><i class="bi bi-moon-stars"></i></span>
+                </button>
                 <a class="admin-icon-btn" href="<?= url('/') ?>" title="View site" aria-label="View site"><i class="bi bi-box-arrow-up-right"></i></a>
                 <?php if ($isSuper): ?>
                     <a class="admin-icon-btn" href="<?= url('/admin/messages') ?>" title="Messages" aria-label="Messages">

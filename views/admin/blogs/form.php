@@ -34,28 +34,38 @@ $categoryValue = (int) old('category_id', (string) ($selectedCategory ?? ($blog[
     <div class="admin-grid admin-grid-editor">
         <div>
             <section class="admin-card">
+                <div class="admin-card-head">
+                    <div>
+                        <h2>Article content</h2>
+                        <p class="sub">Main heading, sub-heading and the full body of the investigation</p>
+                    </div>
+                </div>
                 <div class="admin-card-body">
                     <div class="form-group">
-                        <label class="form-label" for="title">Title</label>
+                        <label class="form-label" for="title">Main heading <span class="field-badge">H1</span></label>
                         <input class="form-control" id="title" name="title" type="text" value="<?= e($titleValue) ?>" maxlength="191" required placeholder="A headline that earns attention">
+                        <p class="form-text">The article title shown on cards, search results and the article page.</p>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="slug">Slug</label>
-                        <input class="form-control" id="slug" name="slug" type="text" value="<?= e($slugValue) ?>" maxlength="220" pattern="[a-z0-9-]+" placeholder="auto-generated-from-the-title">
-                        <p class="form-text">Lowercase letters, numbers and dashes. Leave blank to generate from the title.</p>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="excerpt">Short description</label>
+                        <label class="form-label" for="excerpt">Sub-heading <span class="field-badge">Summary</span></label>
                         <textarea class="form-control" id="excerpt" name="excerpt" rows="3" maxlength="500" required placeholder="The one paragraph that makes a reader click."><?= e($excerptValue) ?></textarea>
-                        <p class="form-text text-end"><span data-counter-for="#excerpt"></span></p>
+                        <div class="d-flex justify-content-between gap-2">
+                            <p class="form-text mb-0">The short description printed beneath the heading and on every article card.</p>
+                            <p class="form-text text-end mb-0"><span data-counter-for="#excerpt"></span></p>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="blog-editor">Full content</label>
+                        <label class="form-label" for="blog-editor">Body content <span class="field-badge">Rich text</span></label>
                         <div class="editor-shell">
                             <div id="blog-editor" data-upload-url="<?= url('/admin/upload/image') ?>"></div>
                         </div>
                         <input type="hidden" name="content" value="<?= e($contentValue) ?>">
-                        <p class="form-text">Use the toolbar to add headings, links, lists and inline images.</p>
+                        <p class="form-text">Format the article with headings, lists, quotes and links — and use the image button to place pictures inside the body.</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="slug">Slug</label>
+                        <input class="form-control" id="slug" name="slug" type="text" value="<?= e($slugValue) ?>" maxlength="220" pattern="[a-z0-9-]+" placeholder="auto-generated-from-the-title">
+                        <p class="form-text">Lowercase letters, numbers and dashes. Leave blank to generate it from the main heading.</p>
                     </div>
                 </div>
             </section>
@@ -124,7 +134,10 @@ $categoryValue = (int) old('category_id', (string) ($selectedCategory ?? ($blog[
 
             <section class="admin-card">
                 <div class="admin-card-head">
-                    <h2>Featured image</h2>
+                    <div>
+                        <h2>Cover image</h2>
+                        <p class="sub">Featured image used on cards and the article hero</p>
+                    </div>
                 </div>
                 <div class="admin-card-body">
                     <label class="cover-drop" for="featured_image">

@@ -63,16 +63,16 @@ $latestRest = array_slice($latest, 0, 6);
 
 <section class="section" id="featured">
     <div class="container">
-        <div class="section-head">
-            <div>
-                <p class="kicker">Editor's selection</p>
-                <h2>Featured investigations</h2>
-                <p>Long reads chosen by the desk — the pieces we would hand you first.</p>
-            </div>
-            <a class="link-arrow" href="<?= url('/blogs') ?>">All investigations <i class="bi bi-arrow-right"></i></a>
-        </div>
-
         <?php if ($lead !== null): ?>
+            <div class="section-head">
+                <div>
+                    <p class="kicker">Editor's selection</p>
+                    <h2>Featured investigations</h2>
+                    <p>Long reads chosen by the desk — the pieces we would hand you first.</p>
+                </div>
+                <a class="link-arrow" href="<?= url('/blogs') ?>">All investigations <i class="bi bi-arrow-right"></i></a>
+            </div>
+
             <div class="row g-4">
                 <div class="col-lg-7">
                     <a class="featured-lead" href="<?= url('/blog/' . $lead['slug']) ?>">
@@ -110,6 +110,17 @@ $latestRest = array_slice($latest, 0, 6);
                     </div>
                 </div>
             </div>
+        <?php else: ?>
+            <div class="archive-empty">
+                <span class="ae-icon"><i class="bi bi-journal-plus"></i></span>
+                <p class="kicker">Editor's selection</p>
+                <h2>The first investigation is being written</h2>
+                <p>ObscuraX opens with three desks — the occult, sexual health, and cybersecurity. No filler and no sample posts: the first piece appears here the moment an editor publishes it.</p>
+                <div class="actions">
+                    <a class="btn btn-brand" href="#categories" data-scroll-to="#categories">Browse the desks</a>
+                    <a class="btn btn-outline-soft" href="#dispatch" data-scroll-to="#dispatch">Get the dispatch</a>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
 </section>
@@ -142,6 +153,7 @@ $latestRest = array_slice($latest, 0, 6);
     </div>
 </section>
 
+<?php if ($latestRest !== []): ?>
 <section class="section">
     <div class="container">
         <div class="section-head">
@@ -161,7 +173,9 @@ $latestRest = array_slice($latest, 0, 6);
         </div>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($popular !== []): ?>
 <section class="section section-line">
     <div class="container">
         <div class="row g-4">
@@ -193,30 +207,34 @@ $latestRest = array_slice($latest, 0, 6);
                     <p class="kicker mb-3">Trending desks</p>
                     <?php foreach ($categories as $category): ?>
                         <a class="d-flex align-items-center justify-content-between py-2 text-decoration-none" href="<?= url('/category/' . $category['slug']) ?>">
-                            <span class="d-inline-flex align-items-center gap-2" style="color:#d3cddf">
+                            <span class="d-inline-flex align-items-center gap-2" style="color:var(--text-soft)">
                                 <i class="bi <?= e($category['icon'] ?: 'bi-collection') ?>" style="color: <?= e($category['accent_color']) ?>"></i>
                                 <?= e($category['name']) ?>
                             </span>
                             <span class="badge-tag"><?= (int) $category['blog_count'] ?></span>
                         </a>
-                        <div class="progress" style="height:3px;background:rgba(255,255,255,.06)">
+                        <div class="progress" style="height:3px;background:var(--line)">
                             <div class="progress-bar" style="width: <?= max(18, min(100, (int) $category['blog_count'] * 10)) ?>%; background: <?= e($category['accent_color']) ?>"></div>
                         </div>
                     <?php endforeach; ?>
 
-                    <hr class="my-4">
-                    <p class="kicker mb-3">Threads</p>
-                    <div class="tag-cloud">
-                        <?php foreach ($tags as $tag): ?>
-                            <a class="tag-chip" href="<?= url('/tag/' . $tag['slug']) ?>">#<?= e($tag['name']) ?> <b><?= (int) ($tag['blog_count'] ?? 0) ?></b></a>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php if ($tags !== []): ?>
+                        <hr class="my-4">
+                        <p class="kicker mb-3">Threads</p>
+                        <div class="tag-cloud">
+                            <?php foreach ($tags as $tag): ?>
+                                <a class="tag-chip" href="<?= url('/tag/' . $tag['slug']) ?>">#<?= e($tag['name']) ?> <b><?= (int) ($tag['blog_count'] ?? 0) ?></b></a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($mostLiked !== []): ?>
 <section class="section">
     <div class="container">
         <div class="section-head">
@@ -235,8 +253,9 @@ $latestRest = array_slice($latest, 0, 6);
         </div>
     </div>
 </section>
+<?php endif; ?>
 
-<section class="section-tight">
+<section class="section-tight" id="dispatch">
     <div class="container">
         <div class="newsletter-band">
             <div class="row align-items-center g-4">
