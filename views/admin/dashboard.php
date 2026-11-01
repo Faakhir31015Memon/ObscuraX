@@ -36,6 +36,9 @@ $views = [
         <?php if (can('blog.create')): ?>
             <a class="btn btn-brand btn-sm" href="<?= url('/admin/blogs/create') ?>"><i class="bi bi-plus-lg"></i> New article</a>
         <?php endif; ?>
+        <?php if ($isSuper): ?>
+            <a class="btn btn-outline-soft btn-sm" href="<?= url('/admin/users') ?>"><i class="bi bi-people"></i> Readers <span class="badge-tag ms-1"><?= number_format((int) $stats['readers_total']) ?></span></a>
+        <?php endif; ?>
         <a class="btn btn-outline-soft btn-sm" href="<?= url('/') ?>" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> View site</a>
     </div>
 </div>
@@ -52,31 +55,31 @@ $views = [
         <article class="admin-stat">
             <div class="top">
                 <div>
-                    <span class="label">Total readers</span>
-                    <p class="value"><?= number_format((int) $stats['users_total']) ?></p>
-                    <span class="hint"><?= (int) $stats['users_new_today'] ?> joined today · <?= (int) $stats['users_new_month'] ?> this month</span>
+                    <span class="label">Investigations</span>
+                    <p class="value"><?= number_format((int) $stats['blogs_published']) ?></p>
+                    <span class="hint"><?= (int) $stats['blogs_draft'] ?> drafts · <?= (int) $stats['blogs_unpublished'] ?> unpublished</span>
                 </div>
-                <span class="ico"><i class="bi bi-people"></i></span>
+                <span class="ico"><i class="bi bi-journal-richtext"></i></span>
             </div>
         </article>
         <article class="admin-stat accent-green">
             <div class="top">
                 <div>
-                    <span class="label">Active &amp; online</span>
-                    <p class="value"><?= number_format((int) $stats['users_active']) ?></p>
-                    <span class="hint"><?= (int) $stats['users_online'] ?> reading right now</span>
+                    <span class="label">Verified readers</span>
+                    <p class="value"><?= number_format((int) $stats['readers_verified']) ?></p>
+                    <span class="hint"><?= (int) $stats['readers_pending'] ?> awaiting verification</span>
                 </div>
-                <span class="ico"><i class="bi bi-broadcast-pin"></i></span>
+                <span class="ico"><i class="bi bi-patch-check"></i></span>
             </div>
         </article>
         <article class="admin-stat accent-red">
             <div class="top">
                 <div>
-                    <span class="label">Published articles</span>
-                    <p class="value"><?= number_format((int) $stats['blogs_published']) ?></p>
-                    <span class="hint"><?= (int) $stats['blogs_draft'] ?> drafts · <?= (int) $stats['blogs_unpublished'] ?> unpublished</span>
+                    <span class="label">Total readers</span>
+                    <p class="value"><?= number_format((int) $stats['readers_total']) ?></p>
+                    <span class="hint"><?= (int) $stats['readers_online'] ?> online now · <?= (int) $stats['readers_new_month'] ?> this month</span>
                 </div>
-                <span class="ico"><i class="bi bi-journal-richtext"></i></span>
+                <span class="ico"><i class="bi bi-people"></i></span>
             </div>
         </article>
         <article class="admin-stat accent-blue">

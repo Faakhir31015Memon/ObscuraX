@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Database;
 use App\Core\Validator;
 use App\Models\Blog;
 use App\Models\Category;
@@ -28,11 +27,13 @@ final class HomeController extends Controller
         $mostLiked = Blog::mostLiked(3);
         $tags = Tag::popular(14);
 
+        $overview = Stat::overview();
         $stats = [
-            'blogs' => (int) Database::value("SELECT COUNT(*) FROM blogs WHERE status = 'published'", [], 0),
-            'readers' => (int) Database::value("SELECT COUNT(*) FROM users WHERE status = 'active'", [], 0),
-            'views' => (int) Database::value('SELECT COALESCE(SUM(view_count), 0) FROM blogs', [], 0),
-            'likes' => (int) Database::value('SELECT COUNT(*) FROM likes', [], 0),
+            'blogs' => $overview['blogs_published'],
+            'readers' => $overview['readers_total'],
+            'verified' => $overview['readers_verified'],
+            'views' => $overview['blog_views'],
+            'likes' => $overview['likes_total'],
         ];
 
         $this->view('home', [

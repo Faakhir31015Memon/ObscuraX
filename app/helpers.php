@@ -75,7 +75,7 @@ if (!function_exists('uploaded_url')) {
 if (!function_exists('cover_url')) {
     function cover_url(?string $path): string
     {
-        return uploaded_url($path, asset('assets/img/blogs/occult-1.jpg'));
+        return uploaded_url($path, asset('assets/img/blog-placeholder.svg'));
     }
 }
 

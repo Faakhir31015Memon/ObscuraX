@@ -11,8 +11,16 @@ final class Stat
     public static function overview(): array
     {
         $v = static fn (string $sql): int => (int) Database::value($sql, [], 0);
+        $readerScope = ' INNER JOIN roles r ON r.id = u.role_id ';
 
         return [
+            'readers_total' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user'"),
+            'readers_active' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'active'"),
+            'readers_verified' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'active' AND u.email_verified_at IS NOT NULL"),
+            'readers_pending' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.email_verified_at IS NULL"),
+            'readers_online' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.status = 'active' AND u.last_activity_at >= (NOW() - INTERVAL 5 MINUTE)"),
+            'readers_new_today' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND DATE(u.created_at) = CURDATE()"),
+            'readers_new_month' => $v("SELECT COUNT(*) FROM users u{$readerScope}WHERE r.slug = 'user' AND u.created_at >= DATE_FORMAT(NOW(), '%Y-%m-01')"),
             'users_total' => $v('SELECT COUNT(*) FROM users'),
             'users_active' => $v("SELECT COUNT(*) FROM users WHERE status = 'active'"),
             'users_online' => $v("SELECT COUNT(*) FROM users WHERE status = 'active' AND last_activity_at >= (NOW() - INTERVAL 5 MINUTE)"),
@@ -213,6 +221,15 @@ final class Stat
             "SELECT u.id, u.username, u.email, u.avatar, u.status, u.created_at, u.email_verified_at, r.slug AS role_slug
              FROM users u INNER JOIN roles r ON r.id = u.role_id
              ORDER BY u.created_at DESC LIMIT $limit"
+        );
+    }
+
+    public static function readersTotal(): int
+    {
+        return (int) Database::value(
+            "SELECT COUNT(*) FROM users u INNER JOIN roles r ON r.id = u.role_id WHERE r.slug = 'user'",
+            [],
+            0
         );
     }
 

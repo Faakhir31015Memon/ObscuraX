@@ -26,6 +26,7 @@ final class AdminDashboardController extends Controller
         $viewsByDay = Stat::viewsByDay(14);
 
         $myBlogs = Blog::forAdmin([], (int) $user['id'], false, 100);
+        $myBlogsTotal = count($myBlogs);
         $myPublished = count(array_filter($myBlogs, static fn (array $b): bool => $b['status'] === 'published'));
         $myViews = array_sum(array_map(static fn (array $b): int => (int) $b['view_count'], $myBlogs));
 
@@ -39,6 +40,7 @@ final class AdminDashboardController extends Controller
             'monthly' => $monthly,
             'viewsByDay' => $viewsByDay,
             'myBlogs' => array_slice($myBlogs, 0, 6),
+            'myBlogsTotal' => $myBlogsTotal,
             'myPublished' => $myPublished,
             'myViews' => $myViews,
             'topBlogs' => Stat::topBlogs('views', 5),

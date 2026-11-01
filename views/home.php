@@ -46,9 +46,9 @@ $latestRest = array_slice($latest, 0, 6);
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat"><strong><?= e(number_short($stats['blogs'])) ?></strong><span>Investigations</span></div>
-                    <div class="hero-stat"><strong><?= e(number_short($stats['readers'])) ?></strong><span>Verified readers</span></div>
+                    <div class="hero-stat"><strong><?= e(number_short($stats['verified'])) ?></strong><span>Verified readers</span></div>
+                    <div class="hero-stat"><strong><?= e(number_short($stats['readers'])) ?></strong><span>Total readers</span></div>
                     <div class="hero-stat"><strong><?= e(number_short($stats['views'])) ?></strong><span>Total reads</span></div>
-                    <div class="hero-stat"><strong><?= e(number_short($stats['likes'])) ?></strong><span>Reader likes</span></div>
                 </div>
             </div>
 
